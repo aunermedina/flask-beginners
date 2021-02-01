@@ -1,24 +1,17 @@
 #!python3
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 # setting up flask app
 app = Flask(__name__)
 
-@app.route('/')
-def welcome():
-    return 'this is my first flask app! Yay!'
+@app.route('/', methods=['GET', 'POST'])
+def rootpage():
+    name = ''
+    if request.method == 'POST' and 'username' in request.form:
+        name = request.form.get('username')
+        
+    return render_template("index.html", name=name)
 
-
-@app.route('/potato')
-def potatopage():
-    return 'this is my potato flask page! Yay!'
-
-@app.route('/method', methods=['GET', 'POST'])
-def method():
-    if request.method == 'POST':
-        return "You've used a POST request!"
-    else:
-        return "I reckon you're probably using a GET request"
 
 app.run()
